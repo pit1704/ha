@@ -1,0 +1,1515 @@
+popup_cards:
+  climate.chambre:
+    title: ''
+    style:
+      position: fixed
+      z-index: 999
+      top: 0
+      left: 0
+      height: 100%
+      width: 100%
+      display: block
+      align-items: center
+      justify-content: center
+      background: rgba(0, 0, 0, 0.8)
+      flex-direction: column
+      margin: 0
+      '--iron-icon-fill-color': '#FFF'
+  light.beganegrond:
+    title: ''
+    style:
+      $: |
+        .mdc-dialog .mdc-dialog__container {
+          width: 100%;
+        }
+        .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
+          width:100%;
+          box-shadow:none;
+        }
+      .: |
+        :host {
+          --mdc-theme-surface: rgba(0,0,0,0);
+          --secondary-background-color: rgba(0,0,0,0);
+          --ha-card-background: rgba(0,0,0,0);
+          --mdc-dialog-scrim-color: rgba(0,0,0,0.8);
+          --mdc-dialog-min-height: 100%;
+          --mdc-dialog-min-width: 100%;
+          --mdc-dialog-max-width: 100%;
+        }
+        mwc-icon-button {
+          color: #FFF;
+        }
+button_card_templates:
+  light_button:
+    aspect_ratio: 4/3
+    color_type: icon
+    hold_action:
+      action: more-info
+      haptic: selection
+    label: >
+      [[[ var bri = entity.attributes.brightness &&
+      Math.round(entity.attributes.brightness / 2.55);  if
+        (entity.state === 'on') return (bri ? (bri+"%") : 'On'); else return "Off"; ]]]
+    layout: icon_label
+    show_label: true
+    show_name: true
+    state:
+      - styles:
+          card:
+            - border: solid 1px var(--paper-item-icon-active-color)
+            - box-shadow: 0px 0px 10px 3px var(--paper-item-icon-active-color)
+          label:
+            - color: var(--paper-item-icon-active-color)
+        value: 'on'
+      - styles:
+          card:
+            - border: solid 1px var(--primary-color)
+            - box-shadow: none
+        value: 'off'
+      - icon: mdi:alert
+        label: Lost
+        styles:
+          card:
+            - border: 'solid 1px #7f7f7f'
+            - box-shadow: none
+          icon:
+            - color: '#ff0000'
+            - opacity: 0.4
+          label:
+            - color: '#7f7f7f'
+          name:
+            - color: '#7f7f7f'
+        value: unavailable
+    styles:
+      card:
+        - border-radius: 10px
+        - padding: 6px 6px 6px 6px
+        - margin: 0% 0% 0% 0%
+        - '--ha-card-background': rgba(0, 0, 0, 0)
+      grid:
+        - grid-template-areas: '"i l l" "n n n"'
+        - grid-template-rows: 33% auto
+        - grid-template-columns: 33% auto
+      icon:
+        - width: 28px
+        - padding: 0px 0px 0px 0px
+        - color: var(--button-card-light-color-no-temperature)
+      label:
+        - font-size: 12px
+        - justify-self: right
+        - padding: 0px 0px 0px 0px
+        - color: var(--secondary-text-color)
+      name:
+        - justify-self: middle
+        - align-self: end
+        - font-size: 14px
+        - padding: 0px 0px 0px 0px
+        - color: var(--primary-text-color)
+        - white-space: normal
+    tap_action:
+      action: toggle
+  vertical-divider-grey:
+    color_type: blank-card
+    styles:
+      card:
+        - color: dimgray
+        - width: 2px
+  horizontal-filler:
+    color_type: blank-card
+    styles:
+      card:
+        - width: 3px
+  vertical-filler:
+    color_type: blank-card
+    styles:
+      card:
+        - height: 3px
+    columns: 6
+    icon_size: 50px
+    row_height: 50px
+  button_picture_script_small:
+    size: 70%
+    show_state: false
+    show_label: false
+    show_name: true
+    show_entity_picture: true
+    color_type: card
+    aspect_ratio: 1/1
+    tap_action:
+      action: none
+      haptic: light
+    hold_action:
+      action: more-info
+      haptic: success
+    color: '#555B65'
+    styles:
+      name:
+        - padding-left: 3px
+        - font-weight: bold
+        - font-family: Helvetica
+        - font-size: 13px
+        - color: lightgrey
+title: Maison
+views:
+  - title: Zwave
+    path: zwave
+    icon: mdi:z-wave
+    badges: []
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: person.pit
+            use_entity_picture: true
+          - type: entity
+            entity: person.cecilia
+            name: Cécilia
+            use_entity_picture: true
+          - type: entity
+            entity: switch.vmc_fast
+            name: VMC
+            state:
+              - icon: phu:fan-blade
+                value: 'off'
+              - icon: phu:fan-blade
+                spin: true
+                value: 'on'
+          - type: entity
+            entity: cover.volets_salon
+            state:
+              - icon: mdi:window-open
+                value: open
+              - icon: mdi:window-closed
+                value: close
+          - type: entity
+            entity: cover.volets_chambre
+            state:
+              - icon: mdi:window-open
+                value: open
+              - icon: mdi:window-closed
+                value: close
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: alarm_control_panel.alarmo
+            name: Alarme
+            show_entity_picture: false
+            vertical: false
+          - type: tile
+            entity: lock.serrure_danalock
+            show_entity_picture: true
+            name: Serrure
+            tap_action:
+              action: toggle
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: switch.portail
+            icon: mdi:gate
+            show_entity_picture: false
+            tap_action:
+              action: toggle
+            hide_state: true
+          - type: tile
+            entity: input_boolean.cave_a_vin
+            show_entity_picture: true
+            name: Cave à vin
+            tap_action:
+              action: toggle
+            hide_state: true
+            icon_tap_action:
+              action: call-service
+              service: switch.turn_on
+              data: {}
+              target:
+                entity_id: switch.ferme
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            tap_action:
+              action: toggle
+            show_entity_picture: false
+            name: Chauffe-eau
+            icon: mdi:water-boiler
+            entity: switch.chauffe_eau_2
+          - type: custom:button-card
+            title: V
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: toggle
+            entity: switch.vmc_fast
+            show_state: false
+            size: 18%
+            state:
+              - icon: mdi:fan
+                value: 'off'
+              - icon: mdi:fan
+                spin: true
+                value: 'on'
+                color: red
+      - type: custom:mushroom-cover-card
+        entity: cover.store_escalier
+        fill_container: true
+        show_position_control: true
+        show_tilt_position_control: false
+        show_buttons_control: true
+        double_tap_action:
+          action: call-service
+          service: cover.stop_cover
+          data: {}
+          target:
+            entity_id: cover.ikea_of_sweden_fyrtur_block_out_roller_blind_cover
+        tap_action:
+          action: toggle
+        primary_info: state
+        layout: horizontal
+      - type: custom:mushroom-cover-card
+        fill_container: true
+        show_position_control: true
+        show_tilt_position_control: false
+        show_buttons_control: true
+        layout: horizontal
+        icon_type: entity-picture
+        tap_action:
+          action: toggle
+        entity: cover.store_terrasse
+      - type: custom:mushroom-cover-card
+        entity: cover.store_jardin
+        fill_container: false
+        show_position_control: true
+        show_tilt_position_control: false
+        show_buttons_control: true
+        layout: horizontal
+      - type: custom:swipe-card
+        parameters:
+          spaceBetween: 8
+          scrollbar:
+            hide: false
+            draggable: true
+            snapOnRelease: true
+            autoheight: true
+        cards:
+          - type: custom:webrtc-camera
+            url: rtsp://Xx2N9xIS90n2:Xu3shl2M6ZWd@192.168.17.190/live0
+            muted: true
+            ptz:
+              service: eufy_security.ptz
+              data_left:
+                entity_id: camera.salon
+                direction: LEFT
+              data_right:
+                entity_id: camera.salon
+                direction: RIGHT
+              data_up:
+                entity_id: camera.salon
+                direction: UP
+              data_down:
+                entity_id: camera.salon
+                direction: DOWN
+          - type: custom:webrtc-camera
+            url: onvif://admin:L298CB0D@192.168.17.51?subtype=Profile000
+            muted: true
+          - type: custom:webrtc-camera
+            url: onvif://admin:L2E00F8E@192.168.17.88?subtype=Profile000
+            muted: true
+      - type: custom:shutter-card
+        title: Volets
+        entities:
+          - entity: cover.volets_salon
+            name: Salle à manger
+            buttons_position: right
+            title_position: bottom
+          - entity: cover.volets_chambre
+            name: Chambre
+            buttons_position: right
+            title_position: bottom
+      - type: media-control
+        entity: media_player.spotify_pit
+      - type: custom:apexcharts-card
+        graph_span: 1d
+        span:
+          start: day
+        header:
+          show: false
+        series:
+          - entity: sensor.chambre_temperature
+          - entity: sensor.chambre_temperature
+            offset: '-1d'
+      - type: custom:power-flow-card-plus
+        entities:
+          grid:
+            entity: sensor.envoy_122304064393_current_net_power_consumption
+          solar:
+            entity: sensor.envoy_current_power_production
+            display_zero_state: true
+          individual1:
+            entity: sensor.chauffe_eau_electric_consumption_w_1
+            display_zero: true
+            name: Chauffe-eau
+            icon: mdi:water-boiler
+        clickable_entities: true
+        display_zero_lines: true
+        use_new_flow_rate_model: true
+        w_decimals: 0
+        kw_decimals: 1
+        min_flow_rate: 0.75
+        max_flow_rate: 6
+        max_expected_power: 2000
+        min_expected_power: 0.01
+        watt_threshold: 1000
+        transparency_zero_lines: 0
+      - show_name: true
+        show_icon: true
+        type: button
+        tap_action:
+          action: toggle
+        entity: input_boolean.vacances
+      - type: entities
+        entities:
+          - switch.presence_simulation
+  - title: Lumières
+    path: lumieres
+    icon: hass:lightbulb-outline
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: light.interrupteur_cuisine
+          - entity: light.interrupteur_exterieur
+          - entity: light.interrupteur_mezzanine
+          - entity: light.interrupteur_salon
+          - entity: light.leds_salon
+          - entity: switch.inter_couloir
+          - entity: light.hue_couloir
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    template: horizontal-filler
+                  - type: custom:button-card
+                    name: Scenes Hue
+                  - type: custom:button-card
+                    template: horizontal-filler
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    template: horizontal-filler
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Concentration
+                    entity_picture: /local/images/hue/concentration.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Concentration
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Concentration' ]]]
+                        color: '#00d0a0'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Lumineux
+                    entity_picture: /local/images/hue/lumineux.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Lumineux
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Lumineux']]]
+                        color: '#ff7935'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Stimulation
+                    entity_picture: /local/images/hue/stimulation.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Stimulation
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Stimulation' ]]]
+                        color: '#ba496c'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Détente
+                    entity_picture: /local/images/hue/detente.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Détente
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Détente' ]]]
+                        color: '#ffc059'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Lecture
+                    entity_picture: /local/images/hue/lecture.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Lecture
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Lecture' ]]]
+                        color: '#a8dfed'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: horizontal-filler
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    template: horizontal-filler
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Veilleuse
+                    entity_picture: /local/images/hue/veilleuse.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Veilleuse
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Veilleuse' ]]]
+                        color: '#a03aa3'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Atténué
+                    entity_picture: /local/images/hue/attenue.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Atténué
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Atténué' ]]]
+                        color: '#a2eaf2'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Printemps
+                    entity_picture: /local/images/hue/printemps.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Fleur de printemps
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Fleur de printemps' ]]]
+                        color: '#a8dfed'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Automne
+                    entity_picture: /local/images/hue/automne.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Automne
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Automne' ]]]
+                        color: '#a8dfed'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Savane
+                    entity_picture: /local/images/hue/coucher de soleil sur la savane.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Coucher de soleil sur la savane
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Coucher de soleil sur la savane' ]]]
+                        color: '#a8dfed'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: horizontal-filler
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    template: horizontal-filler
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Tokyo
+                    entity_picture: /local/images/hue/tokyo.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Tokyo
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Tokyo' ]]]
+                        color: '#ba496c'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Fairfax
+                    entity_picture: /local/images/hue/fairfax.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Fairfax
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Fairfax' ]]]
+                        color: '#8c642b'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Honolulu
+                    entity_picture: /local/images/hue/honolulu.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Honolulu
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Honolulu' ]]]
+                        color: '#814346'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Chinatown
+                    entity_picture: /local/images/hue/chinatown.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Chinatown
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Chinatown' ]]]
+                        color: '#814346'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: button_picture_script_small
+                    name: Aurore boréale
+                    entity_picture: /local/images/hue/boreale.png
+                    tap_action:
+                      action: call-service
+                      service: script.tiles_set_hue_scene
+                      service_data:
+                        option: Aurore boréale
+                    state:
+                      - operator: template
+                        value: >
+                          [[[ return states['input_select.hue_scenes'].state ===
+                          'Aurore boréale' ]]]
+                        color: '#a8dfed'
+                        styles:
+                          name:
+                            - color: '#555B65'
+                      - operator: default
+                        color: '#555B65'
+                        styles:
+                          name:
+                            - color: '#F0C209'
+                  - type: custom:button-card
+                    template: horizontal-filler
+              - type: custom:button-card
+                template: horizontal-filler
+              - type: horizontal-stack
+                cards:
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                      - input_select.hue_groups
+                      - script.set_hue_scene
+                    state_color: true
+              - type: custom:button-card
+                template: vertical-filler
+        columns: 1
+        square: false
+      - type: custom:hue-like-light-card
+        entity: light.wc_hue
+        title: Reading light
+        icon: mdi:floor-lamp
+      - type: entities
+        entities:
+          - light.salle_a_manger_2_hue_color
+          - light.salle_a_manger_3_hue_color
+          - light.salle_a_manger_1_hue_color
+          - light.salle_a_manger_4_hue_color
+      - type: custom:hue-like-light-card
+        entities:
+          - light.salle_a_manger_1_hue_color
+          - light.salle_a_manger_2_hue_color
+          - light.salle_a_manger_3_hue_color
+          - light.salle_a_manger_4_hue_color
+        title: Salle a manger
+        icon: phu:bulbs-sultan
+      - type: entities
+        entities:
+          - entity: switch.seche_linge
+            name: Guirlande de noël
+            icon: phu:bulb-candle
+        title: Guirlande
+  - theme: Backend-selected
+    title: Alarme
+    path: alarme
+    icon: mdi:alarm-light
+    badges: []
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: person.pit
+            use_entity_picture: true
+          - type: entity
+            entity: person.cecilia
+            content_info: state
+            name: Cécilia
+            use_entity_picture: true
+        alignment: center
+      - type: alarm-panel
+        states:
+          - arm_home
+          - arm_away
+          - arm_night
+          - arm_vacation
+        entity: alarm_control_panel.alarmo
+        name: Alarme
+      - type: entities
+        entities:
+          - entity: binary_sensor.capteur_porte_entree_open
+            name: Porte d'entrée
+            icon: mdi:door-closed
+            secondary_info: none
+          - entity: binary_sensor.porte_salon_open
+            name: Porte salon
+          - entity: binary_sensor.fenetre_salon_open
+            name: Fenêtre salon
+            icon: mdi:window-closed-variant
+          - entity: sensor.capteur_fenetre_cuisine_node_status
+            icon: mdi:window-closed-variant
+            name: Fenêtre cuisine
+          - entity: binary_sensor.fenetre_chambre_open
+            name: Fenêtre chambre
+            icon: mdi:window-closed-variant
+          - entity: binary_sensor.fenetre_chambre_amis_open
+            secondary_info: none
+            name: Fenêtre de la chambre d'amis
+            icon: mdi:window-closed-variant
+          - entity: binary_sensor.porte_cellier_open
+            name: Porte cellier/garage
+          - entity: binary_sensor.porte_garage_open
+            name: Porte garage
+        state_color: true
+        title: Etat des portes et fenêtres
+        show_header_toggle: true
+      - type: entities
+        entities:
+          - entity: binary_sensor.fenetre_salon_tilt
+            name: Aération fenêtre salon
+            icon: phu:lift-in-window-open1
+          - entity: binary_sensor.fenetre_chambre_tilt
+            icon: phu:lift-in-window-open1
+          - entity: >-
+              binary_sensor.fenetre_chambre_amis_window_door_is_open_in_tilt_position
+            name: Aération fenêtre chambre amis
+            icon: phu:lift-in-window-open1
+          - entity: binary_sensor.porte_salon_tilt
+            icon: phu:lift-in-window-open1
+        state_color: true
+        title: Aération des portes et fenêtres
+        show_header_toggle: true
+      - type: entities
+        entities:
+          - entity: binary_sensor.capteur_salle_de_bain_mouvement
+            name: Salle de bain
+        state_color: true
+        title: Capteurs de mouvements
+        show_header_toggle: true
+  - title: Virgo
+    path: virgo
+    icon: phu:roborock
+    visible:
+      - user: b018c874ab72450d9738397ebcffeab6
+      - user: 43332323106f4d8e85bf83c0c08ebcd3
+      - user: e66d83c141de4647beadb65c2dd2e549
+      - user: d0f3011d638b42a490222bbf23e09f7c
+      - user: 5c1cac7d7750425a901a573a1711c9e5
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:vacuum-card
+            stats:
+              default:
+                - attribute: filter.filter_life_level
+                  unit: '%'
+                  subtitle: Filtre
+                - attribute: brush_life_level-10-2
+                  unit: '%'
+                  subtitle: Brosse latérale
+                - attribute: sensor.roborock_s7_temps_restant_brosse_laterale
+                  unit: HH
+                  subtitle: Brosse principale
+                - attribute: sensor.roborock_a15_4e54_props_clean_time_2
+                  unit: hours
+                  subtitle: Capteurs
+              cleaning:
+                - attribute: cleaned_area
+                  unit: m2
+                  subtitle: Zone nettoyée
+                - attribute: cleaning_time
+                  unit: minutes
+                  subtitle: Temps de nettoyage
+            actions:
+              - name: Clean living room
+                service: script.clean_living_room
+                icon: mdi:sofa
+              - name: Clean bedroom
+                service: script.clean_bedroom
+                icon: mdi:bed-empty
+              - name: Clean kitchen
+                service: script.clean_kitchen
+                icon: mdi:silverware-fork-knife
+            compact_view: false
+            show_status: true
+            show_toolbar: false
+            show_name: true
+            entity: vacuum.roborock_q_revo
+            map: camera.roborock_q_revo_map
+      - type: custom:mushroom-vacuum-card
+        entity: vacuum.roborock_q_revo
+        icon_animation: true
+        fill_container: true
+        commands:
+          - on_off
+          - start_pause
+          - stop
+          - locate
+          - clean_spot
+          - return_home
+      - type: custom:xiaomi-vacuum-map-card
+        language: fr
+        map_source:
+          camera: camera.roborock_q_revo_map
+        calibration_source:
+          camera: true
+        entity: vacuum.roborock_q_revo
+        vacuum_platform: default
+        two_finger_pan: true
+        map_modes:
+          - template: vacuum_clean_zone
+          - template: vacuum_goto
+          - template: vacuum_clean_segment
+            predefined_selections:
+              - id: '16'
+                icon:
+                  name: mdi:broom
+                  x: 30575
+                  'y': 27875
+                label:
+                  text: Entrée
+                  x: 30575
+                  'y': 27875
+                  offset_y: 35
+                outline:
+                  - - 29350
+                    - 26850
+                  - - 31800
+                    - 26850
+                  - - 31800
+                    - 28900
+                  - - 29350
+                    - 28900
+              - id: '17'
+                icon:
+                  name: mdi:broom
+                  x: 27275
+                  'y': 35900
+                label:
+                  text: Chambre
+                  x: 27275
+                  'y': 35900
+                  offset_y: 35
+                outline:
+                  - - 25450
+                    - 32650
+                  - - 29100
+                    - 32650
+                  - - 29100
+                    - 39150
+                  - - 25450
+                    - 39150
+              - id: '18'
+                icon:
+                  name: mdi:broom
+                  x: 27325
+                  'y': 28575
+                label:
+                  text: Cellier
+                  x: 27325
+                  'y': 28575
+                  offset_y: 35
+                outline:
+                  - - 25350
+                    - 27400
+                  - - 29300
+                    - 27400
+                  - - 29300
+                    - 29750
+                  - - 25350
+                    - 29750
+              - id: '19'
+                icon:
+                  name: mdi:broom
+                  x: 29925
+                  'y': 31375
+                label:
+                  text: Couloir
+                  x: 29925
+                  'y': 31375
+                  offset_y: 35
+                outline:
+                  - - 29100
+                    - 28850
+                  - - 30750
+                    - 28850
+                  - - 30750
+                    - 33900
+                  - - 29100
+                    - 33900
+              - id: '20'
+                icon:
+                  name: mdi:broom
+                  x: 32050
+                  'y': 30300
+                label:
+                  text: Cuisine
+                  x: 32050
+                  'y': 30300
+                  offset_y: 35
+                outline:
+                  - - 30700
+                    - 28850
+                  - - 33400
+                    - 28850
+                  - - 33400
+                    - 31750
+                  - - 30700
+                    - 31750
+              - id: '21'
+                icon:
+                  name: mdi:broom
+                  x: 26425
+                  'y': 31000
+                label:
+                  text: Salle de bain
+                  x: 26425
+                  'y': 31000
+                  offset_y: 35
+                outline:
+                  - - 23600
+                    - 29650
+                  - - 29250
+                    - 29650
+                  - - 29250
+                    - 32350
+                  - - 23600
+                    - 32350
+              - id: '22'
+                icon:
+                  name: mdi:broom
+                  x: 29650
+                  'y': 34900
+                label:
+                  text: Wc
+                  x: 29650
+                  'y': 34900
+                  offset_y: 35
+                outline:
+                  - - 29100
+                    - 33950
+                  - - 30200
+                    - 33950
+                  - - 30200
+                    - 35850
+                  - - 29100
+                    - 35850
+              - id: '23'
+                icon:
+                  name: mdi:broom
+                  x: 28625
+                  'y': 24300
+                label:
+                  text: Salon
+                  x: 28625
+                  'y': 24300
+                  offset_y: 35
+                outline:
+                  - - 25450
+                    - 21800
+                  - - 31800
+                    - 21800
+                  - - 31800
+                    - 26800
+                  - - 25450
+                    - 26800
+              - id: '24'
+                icon:
+                  name: mdi:broom
+                  x: 32125
+                  'y': 34325
+                label:
+                  text: Chambre amis
+                  x: 32125
+                  'y': 34325
+                  offset_y: 35
+                outline:
+                  - - 30250
+                    - 32700
+                  - - 34000
+                    - 32700
+                  - - 34000
+                    - 35950
+                  - - 30250
+                    - 35950
+  - icon: mdi:temperature-celsius
+    badges: []
+    cards:
+      - type: thermostat
+        entity: climate.chambre
+        features:
+          - type: climate-hvac-modes
+            hvac_modes:
+              - 'off'
+              - auto
+              - heat
+      - type: thermostat
+        entity: climate.chambre_amis
+        features:
+          - type: climate-hvac-modes
+            hvac_modes:
+              - 'off'
+              - auto
+              - heat
+      - type: thermostat
+        entity: climate.salon
+        features:
+          - type: climate-hvac-modes
+            hvac_modes:
+              - 'off'
+              - auto
+              - heat
+      - graph: line
+        type: sensor
+        entity: sensor.capteur_salle_de_bain_air_temperature
+        detail: 1
+        name: Temperature Salle de bain
+      - type: entities
+        entities:
+          - sun.sun
+        title: Soleil
+      - type: weather-forecast
+        entity: weather.maison
+        show_forecast: false
+      - type: thermostat
+        entity: climate.thermostat_salle_de_bain
+      - type: thermostat
+        entity: climate.chambre_amis_2
+        features:
+          - type: climate-hvac-modes
+            hvac_modes:
+              - heat
+              - 'off'
+  - path: default_view
+    title: Home
+    icon: mdi:home
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - binary_sensor.ib4225044736_connection_state
+          - binary_sensor.ru0827527424_battery_state
+          - binary_sensor.ru0827527424_connection_state
+          - binary_sensor.ru3858043136_battery_state
+          - binary_sensor.ru3858043136_connection_state
+          - binary_sensor.chambre_power
+          - binary_sensor.chambre_link
+          - binary_sensor.chambre_overlay
+          - binary_sensor.chambre_early_start
+          - binary_sensor.chambre_open_window
+          - binary_sensor.chambre_des_pious_power
+          - binary_sensor.chambre_des_pious_link
+          - binary_sensor.chambre_des_pious_overlay
+          - binary_sensor.chambre_des_pious_early_start
+          - binary_sensor.chambre_des_pious_open_window
+          - sensor.chambre_temperature
+          - sensor.chambre_humidity
+          - sensor.chambre_heating
+          - sensor.chambre_tado_mode
+          - sensor.chambre_des_pious_temperature
+          - sensor.chambre_des_pious_humidity
+          - sensor.chambre_des_pious_heating
+          - sensor.chambre_des_pious_tado_mode
+          - sensor.dir_600_b_sent
+          - sensor.dir_600_packets_received
+          - sensor.dir_600_packets_sent
+          - sensor.dir_600_kib_s_received
+          - sensor.dir_600_kib_s_sent
+          - sensor.dir_600_packets_s_received
+          - sensor.dir_600_packets_s_sent
+          - sensor.dir_600_b_received
+        title: Cellier
+      - type: media-control
+        entity: media_player.chambre_4k
+      - type: entities
+        entities:
+          - entity: remote.harmony_hub
+          - entity: switch.harmony_hub_plex
+          - entity: switch.harmony_hub_regarder_la_tv
+          - entity: switch.harmony_hub_netflix
+          - entity: switch.harmony_hub_prime_video
+          - entity: switch.harmony_hub_ecouter_de_la_musique
+          - entity: light.salon
+        title: Salon
+      - type: media-control
+        entity: media_player.pitv
+      - type: entities
+        entities:
+          - entity: binary_sensor.rpi_power_status
+          - entity: binary_sensor.updater
+        title: Capteur binaire
+      - type: entities
+        entities:
+          - person.cecilia
+          - person.pit
+        title: Personne
+      - type: entities
+        entities:
+          - entity: sensor.hacs
+          - entity: sensor.myenedis_25255137471355
+          - entity: sensor.myenedis_25255137471355_production
+          - entity: sensor.myenedis_cost_yesterday_25255137471355
+          - entity: sensor.myenedis_history_25255137471355_all
+          - entity: sensor.myenedis_history_25255137471355_hc
+          - entity: sensor.myenedis_history_25255137471355_hp
+        title: Capteur
+        state_color: true
+      - type: entities
+        entities:
+          - entity: switch.adaptive_lighting_adapt_brightness_circadian
+          - entity: switch.adaptive_lighting_adapt_color_circadian
+          - entity: switch.adaptive_lighting_circadian
+          - entity: switch.adaptive_lighting_sleep_mode_circadian
+      - type: entities
+        entities:
+          - entity: binary_sensor.is_active_subscription_659261
+          - entity: binary_sensor.is_crashed_659261
+          - entity: binary_sensor.is_owner_659261
+          - entity: binary_sensor.is_stolen_659261
+          - entity: switch.lock_659261
+          - entity: sensor.odometer_km_659261
+          - entity: device_tracker.659261
+      - type: entities
+        entities:
+          - switch.presence_simulation
+      - type: entities
+        entities:
+          - entity: button.octoprint_pause_job
+            name: Pause Job
+          - entity: button.octoprint_resume_job
+            name: Resume Job
+          - entity: button.octoprint_stop_job
+            name: Stop Job
+        title: OctoPrint
+      - type: entities
+        entities:
+          - entity: sensor.octoprint_current_state
+            name: Current State
+          - entity: sensor.octoprint_estimated_finish_time
+            name: Estimated Finish Time
+          - entity: sensor.octoprint_job_percentage
+            name: Job Percentage
+          - entity: binary_sensor.octoprint_printing
+            name: Printing
+          - entity: binary_sensor.octoprint_printing_error
+            name: Printing Error
+          - entity: sensor.octoprint_start_time
+            name: Start Time
+          - entity: sensor.octoprint_actual_w_temp
+            name: Actual W temp
+          - entity: sensor.octoprint_actual_bed_temp
+            name: Actual bed temp
+          - entity: sensor.octoprint_actual_tool0_temp
+            name: Actual tool0 temp
+          - entity: sensor.octoprint_target_w_temp
+            name: Target W temp
+          - entity: sensor.octoprint_target_bed_temp
+            name: Target bed temp
+          - entity: sensor.octoprint_target_tool0_temp
+            name: Target tool0 temp
+        title: OctoPrint
+      - type: entities
+        entities:
+          - entity: switch.ouvert
+          - entity: switch.ferme
+          - entity: cover.desk
+          - entity: switch.wake_up
+          - entity: switch.m
+          - entity: switch.preset_2
+          - entity: switch.preset_3
+        title: cave-vin
+      - type: entities
+        entities:
+          - entity: sensor.hauteur_cave_a_vin
+        title: cave-vin
+      - type: entities
+        entities:
+          - sensor.uptime
+          - sensor.wifi_signal
+          - device_tracker.cave_vin
+        title: cave-vin
+      - type: vertical-stack
+        cards:
+          - type: custom:vacuum-card
+            stats:
+              default:
+                - attribute: filter.filter_life_level
+                  unit: '%'
+                  subtitle: Filtre
+                - attribute: brush_life_level-10-2
+                  unit: '%'
+                  subtitle: Brosse latérale
+                - attribute: brush_cleaner.brush_life_level
+                  unit: '%'
+                  subtitle: Brosse principale
+                - attribute: sensor.roborock_a15_4e54_props_clean_time_2
+                  unit: hours
+                  subtitle: Capteurs
+              cleaning:
+                - attribute: cleaned_area
+                  unit: m2
+                  subtitle: Zone nettoyée
+                - attribute: cleaning_time
+                  unit: minutes
+                  subtitle: Temps de nettoyage
+            actions:
+              - name: Clean living room
+                service: script.clean_living_room
+                icon: mdi:sofa
+              - name: Clean bedroom
+                service: script.clean_bedroom
+                icon: mdi:bed-empty
+              - name: Clean kitchen
+                service: script.clean_kitchen
+                icon: mdi:silverware-fork-knife
+            compact_view: false
+            show_status: true
+            show_toolbar: false
+            show_name: true
+            entity: vacuum.virgo_robot_cleaner
+          - type: custom:xiaomi-vacuum-map-card
+            map_source:
+              camera: camera.virgo
+            calibration_source:
+              camera: true
+            entity: vacuum.virgo_robot_cleaner
+            vacuum_platform: send_command
+            tiles: []
+            tooltip: true
+            map_modes:
+              - template: vacuum_clean_zone_predefined
+                predefined_selections:
+                  - zones:
+                      - - 21017
+                        - 23100
+                        - 28195
+                        - 29651
+                  - zones:
+                      - - 21017
+                        - 23100
+                        - 28195
+                        - 29651
+                  - zones:
+                      - - 28050
+                        - 21366
+                        - 31133
+                        - 24112
+                  - zones:
+                      - - 28002
+                        - 24497
+                        - 35083
+                        - 25798
+                  - zones:
+                      - - 29062
+                        - 25557
+                        - 31904
+                        - 29651
+                  - zones:
+                      - - 31663
+                        - 25557
+                        - 35227
+                        - 29892
+                  - zones:
+                      - - 32096
+                        - 20884
+                        - 35227
+                        - 24690
+                  - zones:
+                      - - 26846
+                        - 25557
+                        - 29062
+                        - 29892
+              - template: vacuum_goto
+              - template: vacuum_clean_zone
+            language: fr
+            two_finger_pan: true
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: entities
+            entities:
+              - entity: switch.salon_camera_enabled
+                name: Camera enabled
+            title: Salon
+          - type: picture
+            image_entity: image.salon_event_image
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: entities
+            entities:
+              - entity: light.pitv_ambilight
+                name: Ambilight
+              - entity: switch.pitv_ambilight_hue
+                name: Ambilight + Hue
+              - entity: switch.pitv_screen_state
+                name: État de l'écran
+              - entity: remote.pitv_remote
+                name: Télécommande
+            title: PiTv
+          - type: media-control
+            entity: media_player.pitv_2
+  - title: Graph
+    path: graph
+    panel: false
+    icon: mdi:database
+    badges: []
+    cards:
+      - type: iframe
+        url: >-
+          https://hapit.duckdns.org/api/hassio_ingress/a7lG_jaKlJxv8VuuD46LLB6ARmIGp6zaybxyO2EU8Ak/d/LaJioF8Gz/hapit?orgId=1&refresh=1m&kiosk&viewPanel=2
+        aspect_ratio: 80%
+      - type: iframe
+        url: >-
+          https://hapit.duckdns.org/api/hassio_ingress/a7lG_jaKlJxv8VuuD46LLB6ARmIGp6zaybxyO2EU8Ak/d/LaJioF8Gz/hapit?viewPanel=10&orgId=1&refresh=15m&from=1616268735605&to=1616355135606&kiosk
+        aspect_ratio: 80%
+      - type: iframe
+        url: >-
+          https://hapit.duckdns.org/api/hassio_ingress/a7lG_jaKlJxv8VuuD46LLB6ARmIGp6zaybxyO2EU8Ak/d/LaJioF8Gz/hapit?viewPanel=4&orgId=1&refresh=15m&from=1616268861533&to=1616355261533&kiosk
+        aspect_ratio: 80%
+      - type: iframe
+        url: >-
+          https://hapit.duckdns.org/api/hassio_ingress/a7lG_jaKlJxv8VuuD46LLB6ARmIGp6zaybxyO2EU8Ak/d/LaJioF8Gz/hapit?viewPanel=6&orgId=1&refresh=15m&from=1616268811343&to=1616355211343&kiosk
+        aspect_ratio: 80%
+      - type: custom:content-card-linky
+        entity: sensor.myenedis_25255137471355
+        showIcon: true
+        showHistory: false
+        showPeakOffPeak: true
+        showInTableUnit: true
+        showDayPrice: true
+        showDayPriceHCHP: true
+        showDayHCHP: true
+        nbJoursAffichage: '7'
+        showError: false
+        showCurrentMonthRatio: false
+        showWeekRatio: false
+        showTitreLigne: false
+        showHeader: false
+        showTitle: true
+        showYearRatio: true
+        showPrice: true
+        showMonthRatio: false
+        showYesterdayRatio: false
+        showEcoWatt: false
+      - type: custom:power-flow-card-plus
+        entities:
+          grid:
+            entity: sensor.envoy_122304064393_current_net_power_consumption
+          solar:
+            entity: sensor.envoy_current_power_production
+            display_zero_state: true
+          individual1:
+            entity: sensor.chauffe_eau_electric_consumption_w_1
+            display_zero: true
+            name: Chauffe-eau
+            icon: mdi:water-boiler
+        clickable_entities: true
+        display_zero_lines: true
+        use_new_flow_rate_model: true
+        w_decimals: 0
+        kw_decimals: 1
+        min_flow_rate: 0.75
+        max_flow_rate: 6
+        max_expected_power: 2000
+        min_expected_power: 0.01
+        watt_threshold: 1000
+        transparency_zero_lines: 0
+  - title: Automatisations
+    path: automatisations
+    visible:
+      - user: d0f3011d638b42a490222bbf23e09f7c
+    icon: mdi:script
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - automation.nouvelle_automatisation_7
